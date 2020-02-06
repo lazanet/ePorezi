@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=ePorezi
+Exec=/opt/ePorezi/ePorezi %u
+Icon=/opt/ePorezi/ePorezi.png
+Type=Application
+Terminal=false
+MimeType=x-scheme-handler/eporezi;

@@ -1,0 +1,32 @@
+#!/bin/bash
+
+if type -p java > /dev/null; then
+    echo found java executable in PATH
+    JAVA_PATH=java
+elif [[ -n "$JAVA_HOME" ]] && [[ -x "$JAVA_HOME/bin/java" ]];  then
+    echo found java executable in JAVA_HOME
+    JAVA_PATH="$JAVA_HOME/bin/java"
+fi
+
+if ! check_java_version "$JAVA_PATH" $JAVA_TARGET; then
+
+  echo looking for java alternatives
+
+  JAVA_ALTERNATIVES=`update-alternatives --list java`;
+  JAVA_ALTERNATIVE_FOUND=0
+
+  for JAVA_PATH in $JAVA_ALTERNATIVES; do
+      JAVA_ALTERNATIVE_FOUND=1
+      break;
+  done
+
+  if [[ JAVA_ALTERNATIVE_FOUND -eq 0 ]]; then
+     zenity --error --text="Java nije pronađena. Aplikacija ne može biti pokrenuta."
+     exit;
+  fi
+
+fi
+
+echo using java command $JAVA_PATH
+
+$JAVA_PATH -jar /opt/ePorezi/ePorezi*.jar $@
